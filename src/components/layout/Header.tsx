@@ -1,6 +1,6 @@
 import { Menu, Sparkles, X, Zap } from 'lucide-react';
 import { useState } from 'react';
-import { navItems } from '../data/memeData';
+import { navItems } from '../../data/memeData';
 
 type HeaderProps = {
   onLaunch: () => void;

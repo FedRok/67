@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { RotateCcw, Save } from 'lucide-react';
-import type { CounterState } from '../types';
+import type { CounterState } from '../../types';
 
 type CounterSectionProps = {
   counters: CounterState;

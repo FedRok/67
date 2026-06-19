@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Dices, MousePointerClick } from 'lucide-react';
 import { useState } from 'react';
-import { randomMemeCards } from '../data/memeData';
-import type { CounterKey } from '../types';
+import { randomMemeCards } from '../../data/memeData';
+import type { CounterKey } from '../../types';
 
 type InteractivePanelProps = {
   onAction: (action: CounterKey) => string;

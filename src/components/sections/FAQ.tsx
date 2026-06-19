@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
-import { faqItems } from '../data/memeData';
+import { faqItems } from '../../data/memeData';
 
 export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState(0);

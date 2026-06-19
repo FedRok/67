@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Repeat2 } from 'lucide-react';
-import { animationSteps } from '../data/memeData';
+import { animationSteps } from '../../data/memeData';
 
 type MiniStepProps = {
   digit: '6' | '7';

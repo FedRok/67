@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import type { BurstDigit, ToastMessage } from '../types';
+import type { BurstDigit, ToastMessage } from '../../types';
 
 type EffectsOverlayProps = {
   bursts: BurstDigit[];

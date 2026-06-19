@@ -14,7 +14,7 @@ export function useLocalStorageState<T>(key: string, initialValue: T) {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      // Local storage can be disabled; the site should stay usable anyway.
+      return;
     }
   }, [key, value]);
 

@@ -1,89 +1,20 @@
 import { useCallback, useMemo, useState } from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import AnimationSteps from './components/AnimationSteps';
-import MemeIntro from './components/MemeIntro';
-import InteractivePanel from './components/InteractivePanel';
-import CounterSection from './components/CounterSection';
-import MiniGame from './components/MiniGame';
-import FAQ from './components/FAQ';
-import Footer from './components/Footer';
-import BackgroundFx from './components/BackgroundFx';
-import EffectsOverlay from './components/EffectsOverlay';
+import { Hero } from './components/hero';
+import { BackgroundFx, EffectsOverlay, Footer, Header } from './components/layout';
+import {
+  AnimationSteps,
+  CounterSection,
+  FAQ,
+  InteractivePanel,
+  MemeIntro,
+  MiniGame
+} from './components/sections';
+import { initialCounters, toneByAction } from './constants/counters';
 import { memePhrases } from './data/memeData';
 import { useLocalStorageState } from './hooks/useLocalStorageState';
+import { speakSixSeven } from './lib/audio';
+import { pickRandom } from './lib/random';
 import type { BurstDigit, CounterKey, CounterState, ToastMessage, Tone } from './types';
-
-const initialCounters: CounterState = {
-  six: 0,
-  seven: 0,
-  combo: 0,
-  mystery: 0
-};
-
-const toneByAction: Record<CounterKey, Tone> = {
-  six: 'acid',
-  seven: 'violet',
-  combo: 'combo',
-  mystery: 'danger'
-};
-
-function pickRandom(items: string[]) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
-function playFallbackTone() {
-  const browserWindow = window as typeof window & {
-    webkitAudioContext?: typeof AudioContext;
-  };
-  const AudioContextConstructor = browserWindow.AudioContext || browserWindow.webkitAudioContext;
-
-  if (!AudioContextConstructor) {
-    return;
-  }
-
-  const audioContext = new AudioContextConstructor();
-  const gain = audioContext.createGain();
-  gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.08, audioContext.currentTime + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.42);
-  gain.connect(audioContext.destination);
-
-  [392, 466.16].forEach((frequency, index) => {
-    const oscillator = audioContext.createOscillator();
-    oscillator.type = 'sawtooth';
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + index * 0.16);
-    oscillator.connect(gain);
-    oscillator.start(audioContext.currentTime + index * 0.16);
-    oscillator.stop(audioContext.currentTime + index * 0.16 + 0.18);
-  });
-
-  window.setTimeout(() => void audioContext.close(), 650);
-}
-
-function speakSixSeven() {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance('six seven');
-    utterance.lang = 'en-US';
-    utterance.rate = 0.82;
-    utterance.pitch = 0.76;
-    utterance.volume = 1;
-
-    const voices = window.speechSynthesis.getVoices();
-    const englishVoice = voices.find((voice) => voice.lang.toLowerCase().startsWith('en'));
-
-    if (englishVoice) {
-      utterance.voice = englishVoice;
-    }
-
-    window.speechSynthesis.speak(utterance);
-    return;
-  }
-
-  playFallbackTone();
-}
 
 function App() {
   const [counters, setCounters] = useLocalStorageState<CounterState>(
