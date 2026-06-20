@@ -9,16 +9,22 @@ type MiniStepProps = {
 };
 
 function MiniStep({ digit, tone, raised }: MiniStepProps) {
+  const imageSrc = digit === '6' ? '/assets/hand-six-cutout.png' : '/assets/hand-seven-cutout.png';
+
   return (
-    <div className="mini-step" aria-hidden="true">
-      <span className={`mini-digit mini-digit-${tone} ${raised ? 'mini-raised' : ''}`}>{digit}</span>
-      <span className={`mini-arrow ${tone === 'acid' ? 'text-acid' : 'text-violet'}`}>
+    <div className={`mini-step mini-step-${tone}`} aria-hidden="true">
+      <img
+        className={`mini-hand-asset ${raised ? 'mini-asset-raised' : 'mini-asset-lowered'}`}
+        src={imageSrc}
+        alt=""
+        draggable="false"
+      />
+      <span
+        className={`mini-arrow ${raised ? 'mini-arrow-up' : 'mini-arrow-down'} ${
+          tone === 'acid' ? 'text-acid' : 'text-violet'
+        }`}
+      >
         {raised ? '↑' : '↓'}
-      </span>
-      <span className="mini-hand">
-        <span className="mini-palm" />
-        <span className="mini-thumb" />
-        <span className="mini-sleeve" />
       </span>
     </div>
   );
@@ -40,8 +46,8 @@ export default function AnimationSteps() {
         </p>
         <h2>Анимация рук 6 и 7</h2>
         <p>
-          Цикл работает как маленький лабораторный ритуал: сначала 6 получает весь
-          лаймовый драматизм, затем 7 отвечает фиолетовым.
+          Цикл работает как маленький лабораторный ритуал: сначала 6 получает весь лаймовый
+          драматизм, затем 7 отвечает фиолетовым.
         </p>
       </motion.div>
 

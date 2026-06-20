@@ -1,3 +1,17 @@
+const sixSevenSoundSrc = '/assets/67.mp3';
+
+let sixSevenAudio: HTMLAudioElement | null = null;
+
+function getSixSevenAudio() {
+  if (!sixSevenAudio) {
+    sixSevenAudio = new Audio(sixSevenSoundSrc);
+    sixSevenAudio.preload = 'auto';
+    sixSevenAudio.volume = 0.95;
+  }
+
+  return sixSevenAudio;
+}
+
 function playFallbackTone() {
   const browserWindow = window as typeof window & {
     webkitAudioContext?: typeof AudioContext;
@@ -28,25 +42,11 @@ function playFallbackTone() {
 }
 
 export function speakSixSeven() {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
+  const audio = getSixSevenAudio();
+  audio.pause();
+  audio.currentTime = 0;
 
-    const utterance = new SpeechSynthesisUtterance('six seven');
-    utterance.lang = 'en-US';
-    utterance.rate = 0.82;
-    utterance.pitch = 0.76;
-    utterance.volume = 1;
-
-    const voices = window.speechSynthesis.getVoices();
-    const englishVoice = voices.find((voice) => voice.lang.toLowerCase().startsWith('en'));
-
-    if (englishVoice) {
-      utterance.voice = englishVoice;
-    }
-
-    window.speechSynthesis.speak(utterance);
-    return;
-  }
-
-  playFallbackTone();
+  void audio.play().catch(() => {
+    playFallbackTone();
+  });
 }

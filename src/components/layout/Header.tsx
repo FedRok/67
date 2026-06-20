@@ -11,8 +11,8 @@ export default function Header({ onLaunch }: HeaderProps) {
 
   const handleLaunch = () => {
     setIsOpen(false);
+    onLaunch();
     document.querySelector('#hero')?.scrollIntoView({ behavior: 'smooth' });
-    window.setTimeout(onLaunch, 240);
   };
 
   return (
